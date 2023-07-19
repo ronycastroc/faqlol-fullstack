@@ -42,10 +42,17 @@ const updateFaq = async (faqId: number, { name }: UpdateFaqParams): Promise<sect
   return result;
 };
 
+const deleteFaq = async (faqId: number) => {
+  await readFaqById(faqId);
+
+  await faqRepository.deleteFaq(faqId);
+};
+
 const faqService = {
   createFaq,
   readFaqs,
-  updateFaq
+  updateFaq,
+  deleteFaq
 };
 
 export default faqService;

@@ -28,11 +28,20 @@ const update = async (data: Prisma.sectionUncheckedUpdateInput, faqId: number) =
   });
 };
 
+const deleteFaq = async (faqId: number) => {
+  return prisma.section.delete({
+    where: { 
+      id: faqId
+    }
+  });
+};
+
 const faqRepository = {
   create,
   readFaqById,
   read,
-  update
+  update,
+  deleteFaq
 };
 
 export default faqRepository;

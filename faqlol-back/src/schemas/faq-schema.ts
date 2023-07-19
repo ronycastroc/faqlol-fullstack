@@ -6,6 +6,10 @@ interface UpdateFaqParams {
   faqId: number;
 }
 
+interface DeleteFaqParams {
+  faqId: number;
+}
+
 export const faqSchema = joi.object<CreateFaqParams>({
   name: joi.string().required(),
   subSectionId: joi.number()
@@ -13,5 +17,9 @@ export const faqSchema = joi.object<CreateFaqParams>({
 
 export const faqUpdateSchema = joi.object<UpdateFaqParams>({
   name: joi.string().required(),
+  faqId: joi.number().required()
+});
+
+export const faqDeleteSchema = joi.object<DeleteFaqParams>({
   faqId: joi.number().required()
 });

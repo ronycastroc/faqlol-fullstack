@@ -35,3 +35,15 @@ export const updateFaq = async (req: Request, res: Response) => {
     return res.status(httpStatus.BAD_REQUEST).send(error.message);
   }
 };
+
+export const deleteFaq = async (req: Request, res: Response) => {
+  try {
+    const { faqId } = req.body;  
+
+    await faqService.deleteFaq(Number(faqId));
+
+    return res.sendStatus(httpStatus.OK);
+  } catch (error) {
+    return res.status(httpStatus.BAD_REQUEST).send(error.message);
+  }
+};
