@@ -19,8 +19,15 @@ const createFaq = async ({ name, subSectionId }: CreateFaqParams): Promise<secti
   return result;
 };
 
+const readFaqs = async (): Promise<section[]> => {
+  const result = await faqRepository.read();
+
+  return result;
+};
+
 const faqService = {
-  createFaq
+  createFaq,
+  readFaqs
 };
 
 export default faqService;

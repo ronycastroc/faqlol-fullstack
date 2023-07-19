@@ -15,9 +15,14 @@ const readFaqById = async (subSectionId: number) => {
   });
 };
 
+const read = async () => {
+  return prisma.section.findMany();
+};
+
 const faqRepository = {
   create,
-  readFaqById
+  readFaqById,
+  read
 };
 
 export default faqRepository;

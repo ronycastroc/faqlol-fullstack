@@ -13,3 +13,13 @@ export const postFaq = async (req: Request, res: Response) => {
     return res.status(httpStatus.BAD_REQUEST).send(error.message);
   }
 };
+
+export const getFaqs = async (req: Request, res: Response) => {
+  try {
+    const result = await faqService.readFaqs();
+
+    return res.status(httpStatus.OK).send(result);
+  } catch (error) {
+    return res.status(httpStatus.BAD_REQUEST).send(error.message);
+  }  
+};
