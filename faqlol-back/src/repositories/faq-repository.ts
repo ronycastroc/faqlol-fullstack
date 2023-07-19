@@ -19,10 +19,20 @@ const read = async () => {
   return prisma.section.findMany();
 };
 
+const update = async (data: Prisma.sectionUncheckedUpdateInput, faqId: number) => {
+  return prisma.section.update({
+    where: {
+      id: faqId
+    },
+    data,
+  });
+};
+
 const faqRepository = {
   create,
   readFaqById,
-  read
+  read,
+  update
 };
 
 export default faqRepository;

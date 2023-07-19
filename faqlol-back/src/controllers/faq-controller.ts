@@ -23,3 +23,15 @@ export const getFaqs = async (req: Request, res: Response) => {
     return res.status(httpStatus.BAD_REQUEST).send(error.message);
   }  
 };
+
+export const updateFaq = async (req: Request, res: Response) => {
+  try {
+    const { name, faqId } = req.body;
+
+    const result = await faqService.updateFaq(Number(faqId), { name });
+
+    return res.status(httpStatus.OK).send(result);
+  } catch (error) {    
+    return res.status(httpStatus.BAD_REQUEST).send(error.message);
+  }
+};
