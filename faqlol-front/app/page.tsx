@@ -1,5 +1,11 @@
-import Link from "next/link";
+import CardFAQ from "./components/CardFAQ/CardFAQ";
+import Title from "./components/Title/Title";
 
 export default function Home() {
-  return <Link href="teste">Teste</Link>;
+  return (
+    <>
+      <Title />
+      <CardFAQ />
+    </>
+  );
 }

@@ -1,8 +1,8 @@
 "use client";
 import { Card, CssBaseline, ThemeProvider, styled } from "@mui/material";
-import "./globals.css";
 import { Inter } from "next/font/google";
 import { themeCreator } from "@/src/theme/base";
+import Image from "next/image";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,8 +12,8 @@ const HeaderWrapper = styled(Card)(
   display: flex;
   align-items: center;
   justify-content: center;
-  height: ${theme.spacing(12)};
-  margin-bottom: ${theme.spacing(10)};
+  height: ${theme.spacing(15)};
+  margin-bottom: ${theme.spacing(5)};
   background-color: ${theme.palette.background.default}
 `
 );
@@ -26,7 +26,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <HeaderWrapper></HeaderWrapper>
+          <HeaderWrapper>
+            <Image
+              src="/../public/lol-league-of-Legends-logo.png"
+              alt="league-of-Legends-logo"
+              width={250}
+              height={100}
+            />
+          </HeaderWrapper>
           {children}
         </ThemeProvider>
       </body>
