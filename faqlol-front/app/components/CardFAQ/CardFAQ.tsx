@@ -1,3 +1,4 @@
+"use client";
 import {
   Accordion,
   AccordionDetails,
@@ -9,8 +10,72 @@ import {
   Typography
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { FaqItem, GET } from "@/app/api/faq/route";
+import { /* use, */ useEffect, useState } from "react";
+
+/* const dataPromise = GET(); */
 
 export default function CardFAQ() {
+  /* const getFaqs = use(dataPromise); */
+  const [getFaqs, setGetFaqs] = useState<FaqItem[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await GET();
+        setGetFaqs(response as FaqItem[]);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const hasChildren = (subSectionId: any) => {
+    return getFaqs.some((faq) => faq.subSectionId === subSectionId);
+  };
+
+  const renderSubSections = (parentId: any) => {
+    const subSections = getFaqs.filter((faq) => faq.subSectionId === parentId);
+
+    return subSections.map((subSection) => {
+      if (hasChildren(subSection.id)) {
+        return (
+          <Accordion key={subSection.id}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls={`panel-${subSection.id}-content`}
+              id={`panel-${subSection.id}-header`}
+            >
+              <Typography>{subSection.name}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>{renderSubSections(subSection.id)}</AccordionDetails>
+          </Accordion>
+        );
+      } else {
+        return <Typography key={subSection.id}>{subSection.name}</Typography>;
+      }
+    });
+  };
+
+  const renderAccordions = () => {
+    const parents = getFaqs.filter((faq) => faq.subSectionId === null);
+
+    return parents.map((parent) => (
+      <Accordion key={parent.id}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls={`panel-${parent.id}-content`}
+          id={`panel-${parent.id}-header`}
+        >
+          <Typography variant="h4">{parent.name}</Typography>
+        </AccordionSummary>
+        <AccordionDetails>{renderSubSections(parent.id)}</AccordionDetails>
+      </Accordion>
+    ));
+  };
+
   return (
     <Container maxWidth="lg">
       <Grid
@@ -22,53 +87,7 @@ export default function CardFAQ() {
       >
         <Grid item xs={12}>
           <Card>
-            <CardContent>
-              <Accordion>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography>Accordion 1</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                    malesuada lacus ex, sit amet blandit leo lobortis eget.
-                  </Typography>
-                </AccordionDetails>
-              </Accordion>
-              <Accordion>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel2a-content"
-                  id="panel2a-header"
-                >
-                  <Typography>Accordion 2</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                    malesuada lacus ex, sit amet blandit leo lobortis eget.
-                  </Typography>
-                </AccordionDetails>
-              </Accordion>
-              <Accordion>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel2a-content"
-                  id="panel2a-header"
-                >
-                  <Typography>Accordion 3</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                    malesuada lacus ex, sit amet blandit leo lobortis eget.
-                  </Typography>
-                </AccordionDetails>
-              </Accordion>
-            </CardContent>
+            <CardContent>{renderAccordions()}</CardContent>
           </Card>
         </Grid>
       </Grid>

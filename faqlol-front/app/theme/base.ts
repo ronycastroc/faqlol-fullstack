@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Theme } from "@mui/material";
-import { DarkTheme } from "@/src/theme/theme";
+import { DarkTheme } from "@/app/theme/theme";
 
 export function themeCreator(theme: string): Theme {
   return themeMap[theme];

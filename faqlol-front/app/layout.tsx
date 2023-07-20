@@ -1,7 +1,7 @@
 "use client";
 import { Card, CssBaseline, ThemeProvider, styled } from "@mui/material";
 import { Inter } from "next/font/google";
-import { themeCreator } from "@/src/theme/base";
+import { themeCreator } from "@/app/theme/base";
 import Image from "next/image";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className} suppressHydrationWarning={true}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <HeaderWrapper>
@@ -32,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               alt="league-of-Legends-logo"
               width={250}
               height={100}
+              priority
             />
           </HeaderWrapper>
           {children}
