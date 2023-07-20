@@ -12,7 +12,7 @@ export default function Title() {
       width="100%"
       mb={theme.spacing(5)}
     >
-      <Typography variant="h2">Frequently asked questions</Typography>
+      <Typography variant="h2">Frequently Asked Questions</Typography>
     </Box>
   );
 }

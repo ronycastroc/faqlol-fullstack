@@ -1,8 +1,17 @@
 "use client";
-import { Card, CssBaseline, ThemeProvider, styled } from "@mui/material";
+import {
+  Card,
+  CssBaseline,
+  IconButton,
+  ThemeProvider,
+  Tooltip,
+  styled
+} from "@mui/material";
 import { Inter } from "next/font/google";
 import { themeCreator } from "@/app/theme/base";
 import Image from "next/image";
+import HomeIcon from "@mui/icons-material/Home";
+import AddIcon from "@mui/icons-material/Add";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,8 +23,17 @@ const HeaderWrapper = styled(Card)(
   justify-content: center;
   height: ${theme.spacing(15)};
   margin-bottom: ${theme.spacing(5)};
-  background-color: ${theme.palette.background.default}
-`
+  background-color: ${theme.palette.background.default}`
+);
+
+const ButtonWrapper = styled("div")(
+  ({ theme }) => `
+  position: absolute;
+  top: ${theme.spacing(2)};
+  left: ${theme.spacing(1)};
+  display: flex;
+  flex-direction: row;
+  align-items: center;`
 );
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -34,6 +52,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               height={100}
               priority
             />
+            <ButtonWrapper>
+              <Tooltip title="Home" arrow>
+                <IconButton color="primary">
+                  <HomeIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Add Section" arrow>
+                <IconButton color="primary">
+                  <AddIcon />
+                </IconButton>
+              </Tooltip>
+            </ButtonWrapper>
           </HeaderWrapper>
           {children}
         </ThemeProvider>
