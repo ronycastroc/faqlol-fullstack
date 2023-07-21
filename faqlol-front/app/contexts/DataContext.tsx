@@ -12,7 +12,11 @@ const DataContext = createContext<DataContext>({} as DataContext);
 export default DataContext;
 
 const initialDataState = {
-  requiredTextError: false
+  requiredTextError: false,
+  getFaqs: [],
+  alertMessage: "",
+  alertSeverity: "error",
+  isAlertOpen: false
 };
 
 type DataState = typeof initialDataState;

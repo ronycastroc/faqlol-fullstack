@@ -1,5 +1,6 @@
 "use client";
 import {
+  AlertColor,
   Box,
   Button,
   Card,
@@ -11,11 +12,11 @@ import {
   styled
 } from "@mui/material";
 import { Form } from "@unform/web";
-import { Metadata } from "next";
 import { VTextField } from "../components/Forms/VTextField";
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import { FormHandles } from "@unform/core";
 import DataContext from "../contexts/DataContext";
+import { FaqItem, POST } from "../api/faq/route";
 
 export interface IFormData {
   name: string;
@@ -32,10 +33,63 @@ const ButtonWrapper = styled("div")(
 
 export default function AddFaq() {
   const formRef = useRef<FormHandles>(null);
-  const { setDataState } = useContext(DataContext);
+  const [section, setSection] = useState<string | null>(null);
+  const { getFaqs, setDataState } = useContext(DataContext);
 
-  const handleSubmit = async (data: IFormData) => {
-    alert("ok");
+  const formatSectionsOptions = (sections: FaqItem[]) => {
+    const options: { value: string; label: string }[] = [];
+    const sectionCounts: { [key: string]: number } = {};
+
+    const generateSectionNumbers = (sections: FaqItem[], parentNumber: string = "") => {
+      const sortedSections = sections.sort((a, b) => a.id - b.id);
+
+      sortedSections.forEach((section, index) => {
+        const parentCount = sectionCounts[parentNumber] || 0;
+        const sectionNumber =
+          parentNumber === "" ? `${index + 1}` : `${parentNumber}.${index + 1}`;
+
+        options.push({
+          value: String(section.id),
+          label: `${sectionNumber} - ${section.name}`
+        });
+
+        sectionCounts[sectionNumber] = 1;
+
+        const subSections = getFaqs.filter(
+          (faq: FaqItem) => faq.subSectionId === section.id
+        );
+
+        if (subSections.length > 0) {
+          generateSectionNumbers(subSections, sectionNumber);
+        }
+
+        sectionCounts[parentNumber] = parentCount + 1;
+      });
+    };
+
+    const parentSections = sections.filter((section) => section.subSectionId === null);
+
+    generateSectionNumbers(parentSections);
+
+    return options;
+  };
+
+  const handleSubmit = async (data: any) => {
+    const { addSection, selectSection } = data;
+
+    const body = {
+      name: addSection,
+      subSectionId: selectSection
+    };
+
+    try {
+      await POST(body);
+
+      formRef.current!.setFieldValue("addSection", "");
+      formRef.current!.setFieldValue("selectSection", "");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -63,25 +117,30 @@ export default function AddFaq() {
             <Box p={5}>
               <Form ref={formRef} onSubmit={handleSubmit}>
                 <VTextField
-                  name="add-section"
+                  name="addSection"
                   required
                   fullWidth
                   margin="normal"
-                  id="outlined-text"
+                  id="add-section"
                   label="Add a section title"
                   onKeyDown={handleKeyDown}
                 />
                 <VTextField
-                  name="select-section"
+                  name="selectSection"
                   required
                   fullWidth
                   margin="normal"
-                  id="outlined-select-currency"
+                  id="select-section"
                   select
                   label="Select a section"
-                  value={" "}
+                  value={section !== null ? String(section) : ""}
+                  onChange={(e) => setSection(e.target.value)}
                 >
-                  <MenuItem>OPA</MenuItem>
+                  {formatSectionsOptions(getFaqs).map((option, index) => (
+                    <MenuItem key={index} value={String(option.value)}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
                 </VTextField>
               </Form>
               <ButtonWrapper>

@@ -3,7 +3,6 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Box,
   Card,
   CardContent,
   Container,
@@ -11,8 +10,9 @@ import {
   Typography
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { FaqItem, GET } from "@/app/api/faq/route";
-import { /* use, */ useEffect, useState } from "react";
+import { FaqItem } from "@/app/api/faq/route";
+import { /* use, */ useContext } from "react";
+import DataContext from "@/app/contexts/DataContext";
 
 /* const dataPromise = GET(); */
 
@@ -22,29 +22,16 @@ const getSectionNumber = (level: number, index: number[]) => {
 
 export default function CardFAQ() {
   /* const getFaqs = use(dataPromise); */
-  const [getFaqs, setGetFaqs] = useState<FaqItem[]>([]);
+  const { getFaqs } = useContext(DataContext);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await GET();
-        setGetFaqs(response as FaqItem[]);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const hasChildren = (subSectionId: any) => {
-    return getFaqs.some((faq) => faq.subSectionId === subSectionId);
+  const hasChildren = (subSectionId: FaqItem) => {
+    return getFaqs.some((faq: any) => faq.subSectionId === subSectionId);
   };
 
   const renderSubSections = (parentId: any, parentIndex: number[]) => {
-    const subSections = getFaqs.filter((faq) => faq.subSectionId === parentId);
+    const subSections = getFaqs.filter((faq: any) => faq.subSectionId === parentId);
 
-    return subSections.map((subSection, subIndex) => {
+    return subSections.map((subSection: any, subIndex: number) => {
       const subSectionIndex = [...parentIndex, subIndex + 1];
       const subSectionNumber = getSectionNumber(subIndex + 1, parentIndex);
 
@@ -74,9 +61,9 @@ export default function CardFAQ() {
   };
 
   const renderAccordions = () => {
-    const parents = getFaqs.filter((faq) => faq.subSectionId === null);
+    const parents = getFaqs.filter((faq: any) => faq.subSectionId === null);
 
-    return parents.map((parent, parentIndex) => {
+    return parents.map((parent: any, parentIndex: number) => {
       const parentSectionNumber = getSectionNumber(parentIndex + 1, []);
 
       return (

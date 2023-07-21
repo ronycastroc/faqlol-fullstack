@@ -1,3 +1,5 @@
+import { IFormData } from "@/app/add-faq/page";
+
 export interface FaqItem {
   id: number;
   name: string;
@@ -10,6 +12,24 @@ const URL_API = "http://localhost:5000/faq";
 
 export async function GET() {
   const response = await fetch(URL_API);
+
+  if (!response.ok) throw new Error("Failed to fetch data");
+
+  const faqs: FaqItem[] = await response.json();
+
+  return faqs;
+}
+
+export async function POST(body: IFormData) {
+  if (!body.name) throw new Error("Section title is required");
+
+  const response = await fetch(URL_API, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
 
   if (!response.ok) {
     throw new Error("Failed to fetch data");

@@ -13,6 +13,7 @@ import Image from "next/image";
 import HomeIcon from "@mui/icons-material/Home";
 import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/navigation";
+import { DataProvider } from "./contexts/DataContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -52,31 +53,33 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={inter.className} suppressHydrationWarning={true}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <HeaderWrapper>
-            <Image
-              src="/../public/lol-league-of-Legends-logo.png"
-              alt="league-of-Legends-logo"
-              width={250}
-              height={100}
-              priority
-            />
-            <ButtonWrapper>
-              <Tooltip title="Home" arrow>
-                <IconButton color="primary" onClick={handleHomeButtonClick}>
-                  <HomeIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Add Section" arrow>
-                <IconButton color="primary" onClick={handleAddButtonClick}>
-                  <AddIcon />
-                </IconButton>
-              </Tooltip>
-            </ButtonWrapper>
-          </HeaderWrapper>
-          {children}
-        </ThemeProvider>
+        <DataProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <HeaderWrapper>
+              <Image
+                src="/../public/lol-league-of-Legends-logo.png"
+                alt="league-of-Legends-logo"
+                width={250}
+                height={100}
+                priority
+              />
+              <ButtonWrapper>
+                <Tooltip title="Home" arrow>
+                  <IconButton color="primary" onClick={handleHomeButtonClick}>
+                    <HomeIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Add Section" arrow>
+                  <IconButton color="primary" onClick={handleAddButtonClick}>
+                    <AddIcon />
+                  </IconButton>
+                </Tooltip>
+              </ButtonWrapper>
+            </HeaderWrapper>
+            {children}
+          </ThemeProvider>
+        </DataProvider>
       </body>
     </html>
   );
