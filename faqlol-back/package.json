@@ -10,12 +10,16 @@
     "dev": "NODE_ENV=.env nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts",
     "migration:run": "prisma migrate deploy",
     "migration:generate": "npm run dev:load-envs prisma migrate dev",
+    "dev:load-envs": "dotenv -e .env",
     "lint": "eslint .",
     "lint:staged": "lint-staged"
   },
   "keywords": [],
   "author": "Rony Castro",
   "license": "ISC",
+  "prisma": {
+    "seed": "npm run dev:load-envs -- ts-node prisma/seed.ts"
+  },
   "dependencies": {
     "@prisma/client": "^5.0.0",
     "@types/axios": "^0.14.0",
