@@ -7,7 +7,7 @@ RUN npm i
 RUN npm run build
 
 RUN mkdir -p /var/www/html
-RUN mv /app/.next/* /var/www/html
+RUN mv out/* /var/www/html
 
 WORKDIR /
 
