@@ -12,12 +12,14 @@ import {
   styled
 } from "@mui/material";
 import { Form } from "@unform/web";
-import { VTextField } from "../components/Forms/VTextField";
+
 import { useContext, useRef, useState } from "react";
 import { FormHandles } from "@unform/core";
-import DataContext from "../contexts/DataContext";
-import { FaqItem, POST } from "../api/faq/route";
+
 import { useRouter } from "next/navigation";
+import { VTextField } from "@/app/components/Forms/VTextField";
+import DataContext from "@/app/contexts/DataContext";
+import { FaqItem, POST } from "@/app/api/faq/route";
 
 export interface IFormData {
   name: string;

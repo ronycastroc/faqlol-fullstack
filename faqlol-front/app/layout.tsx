@@ -12,6 +12,8 @@ import { themeCreator } from "@/app/theme/base";
 import Image from "next/image";
 import HomeIcon from "@mui/icons-material/Home";
 import AddIcon from "@mui/icons-material/Add";
+import UpdateIcon from "@mui/icons-material/Update";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useRouter } from "next/navigation";
 import { DataProvider } from "./contexts/DataContext";
 import CustomAlert from "./components/CustomAlert/CustomAlert";
@@ -51,6 +53,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     router.push("/add-faq");
   };
 
+  const handleUpdateButtonClick = () => {
+    router.push("/update-faq");
+  };
+
+  const handleDeleteButtonClick = () => {
+    router.push("/");
+  };
+
   return (
     <html lang="en">
       <body className={inter.className} suppressHydrationWarning={true}>
@@ -74,6 +84,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Tooltip title="Add Section" arrow>
                   <IconButton color="primary" onClick={handleAddButtonClick}>
                     <AddIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Update Section" arrow>
+                  <IconButton color="primary" onClick={handleUpdateButtonClick}>
+                    <UpdateIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete Section" arrow>
+                  <IconButton color="primary" onClick={handleDeleteButtonClick}>
+                    <DeleteIcon />
                   </IconButton>
                 </Tooltip>
               </ButtonWrapper>

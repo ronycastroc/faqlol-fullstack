@@ -1,4 +1,4 @@
-import { IFormData } from "@/app/add-faq/page";
+import { IFormData } from "@/app/(pages)/add-faq/page";
 
 export interface FaqItem {
   id: number;
