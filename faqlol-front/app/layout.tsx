@@ -12,6 +12,7 @@ import { themeCreator } from "@/app/theme/base";
 import Image from "next/image";
 import HomeIcon from "@mui/icons-material/Home";
 import AddIcon from "@mui/icons-material/Add";
+import { useRouter } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,6 +39,15 @@ const ButtonWrapper = styled("div")(
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const theme = themeCreator("DarkTheme");
+  const router = useRouter();
+
+  const handleHomeButtonClick = () => {
+    router.push("/");
+  };
+
+  const handleAddButtonClick = () => {
+    router.push("/add-faq");
+  };
 
   return (
     <html lang="en">
@@ -54,12 +64,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             />
             <ButtonWrapper>
               <Tooltip title="Home" arrow>
-                <IconButton color="primary">
+                <IconButton color="primary" onClick={handleHomeButtonClick}>
                   <HomeIcon />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Add Section" arrow>
-                <IconButton color="primary">
+                <IconButton color="primary" onClick={handleAddButtonClick}>
                   <AddIcon />
                 </IconButton>
               </Tooltip>
