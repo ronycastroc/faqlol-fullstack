@@ -14,6 +14,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/navigation";
 import { DataProvider } from "./contexts/DataContext";
+import CustomAlert from "./components/CustomAlert/CustomAlert";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -79,6 +80,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </HeaderWrapper>
             {children}
           </ThemeProvider>
+          <CustomAlert />
         </DataProvider>
       </body>
     </html>

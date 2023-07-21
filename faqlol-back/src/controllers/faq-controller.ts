@@ -5,7 +5,8 @@ import httpStatus from "http-status";
 export const postFaq = async (req: Request, res: Response) => {
   try {
     const { name, subSectionId } = req.body;
-    const idNumber = Number(subSectionId);   
+
+    const idNumber = subSectionId === "New Section" ? null : Number(subSectionId);  
 
     const result = await faqService.createFaq({ name, subSectionId: idNumber });
 

@@ -1,5 +1,9 @@
-import { CreateFaqParams } from "@/services/faq-service";
-import joi from "joi";
+import joi, { ObjectSchema, AlternativesSchema } from "joi";
+
+interface CreateFaqParams {
+  name: string;
+  subSectionId: number | string;
+}
 
 interface UpdateFaqParams {
   name: string;
@@ -10,9 +14,11 @@ interface DeleteFaqParams {
   faqId: number;
 }
 
-export const faqSchema = joi.object<CreateFaqParams>({
+const numberOrStringSchema: AlternativesSchema = joi.alternatives().try(joi.number(), joi.string());
+
+export const faqSchema: ObjectSchema<CreateFaqParams> = joi.object<CreateFaqParams>({
   name: joi.string().required(),
-  subSectionId: joi.number()
+  subSectionId: numberOrStringSchema.required()
 });
 
 export const faqUpdateSchema = joi.object<UpdateFaqParams>({

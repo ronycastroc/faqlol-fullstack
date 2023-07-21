@@ -4,6 +4,7 @@ import CardFAQ from "./components/CardFAQ/CardFAQ";
 import Title from "./components/Title/Title";
 import DataContext from "./contexts/DataContext";
 import { FaqItem, GET } from "./api/faq/route";
+import { AlertColor } from "@mui/material";
 
 export default function Home() {
   const { getFaqs, setDataState } = useContext(DataContext);
@@ -16,7 +17,14 @@ export default function Home() {
           getFaqs: response as FaqItem[]
         });
       } catch (error) {
-        console.error(error);
+        let errorMessage = "Something went wrong, please try again later.";
+        let severity: AlertColor = "error";
+
+        setDataState({
+          alertMessage: errorMessage,
+          alertSeverity: severity,
+          isAlertOpen: true
+        });
       }
     };
 

@@ -17,6 +17,7 @@ import { useContext, useRef, useState } from "react";
 import { FormHandles } from "@unform/core";
 import DataContext from "../contexts/DataContext";
 import { FaqItem, POST } from "../api/faq/route";
+import { useRouter } from "next/navigation";
 
 export interface IFormData {
   name: string;
@@ -35,9 +36,12 @@ export default function AddFaq() {
   const formRef = useRef<FormHandles>(null);
   const [section, setSection] = useState<string | null>(null);
   const { getFaqs, setDataState } = useContext(DataContext);
+  const route = useRouter();
 
   const formatSectionsOptions = (sections: FaqItem[]) => {
-    const options: { value: string; label: string }[] = [];
+    const options: { value: string; label: string }[] = [
+      { value: "New Section", label: "New Main Section " }
+    ];
     const sectionCounts: { [key: string]: number } = {};
 
     const generateSectionNumbers = (sections: FaqItem[], parentNumber: string = "") => {
@@ -77,9 +81,19 @@ export default function AddFaq() {
   const handleSubmit = async (data: any) => {
     const { addSection, selectSection } = data;
 
+    if (!data.addSection || !data.selectSection) {
+      setDataState({
+        requiredTextError: true
+      });
+      return;
+    }
+
+    const sectionToSubmit =
+      selectSection === "New Section" ? "New Section" : selectSection;
+
     const body = {
       name: addSection,
-      subSectionId: selectSection
+      subSectionId: sectionToSubmit
     };
 
     try {
@@ -87,8 +101,32 @@ export default function AddFaq() {
 
       formRef.current!.setFieldValue("addSection", "");
       formRef.current!.setFieldValue("selectSection", "");
-    } catch (error) {
-      console.log(error);
+      const errorMessage = "New section successfully added!";
+      const severity: AlertColor = "success";
+
+      setDataState({
+        alertMessage: errorMessage,
+        alertSeverity: severity,
+        isAlertOpen: true
+      });
+
+      route.push("/");
+    } catch (error: any) {
+      formRef.current!.setFieldValue("addSection", "");
+      formRef.current!.setFieldValue("selectSection", "");
+      let errorMessage = "Something went wrong, please try again later.";
+      let severity: AlertColor = "error";
+
+      if (error.message === "Section title is required") {
+        errorMessage = "Section title is required";
+        severity = "error";
+      }
+
+      setDataState({
+        alertMessage: errorMessage,
+        alertSeverity: severity,
+        isAlertOpen: true
+      });
     }
   };
 

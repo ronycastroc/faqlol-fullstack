@@ -84,7 +84,7 @@ export default function CardFAQ() {
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" sx={{ mb: "50px" }}>
       <Grid
         container
         direction="row"
