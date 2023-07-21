@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "rm -rf dist",
     "build": "tsc -p tsconfig.build.json",
-    "start": "ts-node-dev -r tsconfig-paths/register src/server.ts",
+    "start": "npx prisma migrate dev && npx prisma db seed && npm run dev",
     "dev": "NODE_ENV=.env nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts",
     "migration:run": "prisma migrate deploy",
     "migration:generate": "npm run dev:load-envs prisma migrate dev",

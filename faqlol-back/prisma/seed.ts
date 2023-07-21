@@ -20,7 +20,7 @@ const createRandomSections = async () => {
 
   for (let i = 1; i <= 5; i++) {
     const parentSection: ParentSection = {
-      name: `Parent Section ${i}`,
+      name: `Lorem, ipsum dolor sit amet consectetur ${i}`,
       subSectionId: null,
     };
     parentSections.push(parentSection);
@@ -32,7 +32,7 @@ const createRandomSections = async () => {
     });
 
     const subSection: SubSection = {
-      name: "Subsection 1",
+      name: "Maiores, necessitatibus nesciunt excepturi saepe ex minima dicta ut voluptate enim",
       subSectionId: createdParentSection.id,
     };
     subSections.push(subSection);

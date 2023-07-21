@@ -1,0 +1,53 @@
+version: "3"
+services:
+  app_react:
+    build: ./faqlol-front
+    container_name: app_react
+    volumes:
+      - build_react:/var/www/html
+    depends_on:
+      - app_node
+
+  database:
+    image: postgres
+    container_name: database
+    ports:
+      - 2345:5432
+    environment:
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=698993
+      - POSTGRES_HOST=database
+      - POSTGRES_PORT=5432
+      - POSTGRES_DATABASE=faqlol
+    volumes:
+      - volume_database:/var/lib/postgresql/data
+
+  app_node:
+    build: ./faqlol-back
+    container_name: app_node
+    ports:
+      - 5000:5000
+    environment:
+      - PORT=5000
+      - DATABASE_URL=postgresql://postgres:698993@database:5432/faqlol?schema=public
+    volumes:
+      - ./faqlol-back:/usr/src
+      - /usr/src/node_modules
+    entrypoint: dockerize -wait tcp://database:5432 -timeout 20s docker-entrypoint.sh
+    command: "npm run start"
+    depends_on:
+      - database
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - 80:80
+    volumes:
+      - build_react:/var/www/html
+    depends_on:
+      - app_react
+
+volumes:
+  build_react:
+  volume_database:

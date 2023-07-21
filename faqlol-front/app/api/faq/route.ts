@@ -1,4 +1,5 @@
 import { IFormData } from "@/app/(pages)/add-faq/page";
+import { NextRequest } from "next/server";
 
 export interface FaqItem {
   id: number;
@@ -8,7 +9,7 @@ export interface FaqItem {
   updatedAt: Date;
 }
 
-const URL_API = "http://localhost:5000/faq";
+const URL_API = "http://localhost/api/faq";
 
 export async function GET() {
   const response = await fetch(URL_API);
@@ -20,7 +21,7 @@ export async function GET() {
   return faqs;
 }
 
-export async function POST(body: IFormData) {
+export async function POST(request: Request | NextRequest, body: IFormData) {
   if (!body.name) throw new Error("Section title is required");
 
   const response = await fetch(URL_API, {

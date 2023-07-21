@@ -99,7 +99,15 @@ export default function AddFaq() {
     };
 
     try {
-      await POST(body);
+      /* Type "IFormData" is not a valid type for the function's first argument.
+          Expected "Request | NextRequest", got "IFormData". */
+      const headers = new Headers();
+      headers.append("Content-Type", "application/json");
+      const request = new Request("https://example.com/api", {
+        headers: headers
+      });
+
+      await POST(request, body);
 
       formRef.current!.setFieldValue("addSection", "");
       formRef.current!.setFieldValue("selectSection", "");
